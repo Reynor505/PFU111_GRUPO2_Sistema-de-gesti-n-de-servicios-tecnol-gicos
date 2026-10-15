@@ -109,3 +109,58 @@ class SoporteTecnico(Servicio):
     # Polimorfismo: precio base + horas x tarifa por hora
     def calcular_costo(self):
         return self._precio_base + self.costo_horas()
+
+def pedir_texto(mensaje):
+    texto = input(mensaje).strip()
+    while texto == "":
+        print("Error: el campo no puede estar vacío.")
+        texto = input(mensaje).strip()
+    return texto
+
+
+def pedir_entero_positivo(mensaje):
+    """Pide un entero mayor que 0 (cantidades y horas)."""
+    while True:
+        try:
+            numero = int(input(mensaje))
+            if numero > 0:
+                return numero
+            print("Error: el valor debe ser mayor que 0.")
+        except ValueError:
+            print("Error: ingrese un número entero válido.")
+
+
+def pedir_decimal_positivo(mensaje, permitir_cero=False):
+    """Pide un número decimal positivo (precios y tarifas)."""
+    while True:
+        try:
+            numero = float(input(mensaje))
+            if numero > 0 or (permitir_cero and numero == 0):
+                return numero
+            print("Error: el valor no puede ser negativo ni cero.")
+        except ValueError:
+            print("Error: ingrese un número válido.")
+
+
+def pedir_codigo(servicios):
+    """Pide un código y verifica que no esté repetido."""
+    while True:
+        codigo = pedir_texto("Código del servicio: ")
+        repetido = False
+        for s in servicios:
+            if s.get_codigo() == codigo:
+                repetido = True
+        if repetido:
+            print("Error: ese código ya existe.")
+        else:
+            return codigo
+
+
+def pedir_datos_comunes(servicios):
+    codigo = pedir_codigo(servicios)
+    cliente = pedir_texto("Nombre del cliente: ")
+    descripcion = pedir_texto("Descripción: ")
+    precio_base = pedir_decimal_positivo("Precio base (Bs): ")
+    return codigo, cliente, descripcion, precio_base
+
+
