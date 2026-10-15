@@ -1,0 +1,66 @@
+class Servicio:
+    """Clase base con los atributos comunes a todos los servicios."""
+
+    def __init__(self, codigo, cliente, descripcion, precio_base):
+        # Atributos protegidos (con _): se acceden mediante métodos get
+        self._codigo = codigo
+        self._cliente = cliente
+        self._descripcion = descripcion
+        self._precio_base = precio_base
+
+    # Acceso apropiado a los atributos
+    def get_codigo(self):
+        return self._codigo
+
+    def get_cliente(self):
+        return self._cliente
+
+    def get_descripcion(self):
+        return self._descripcion
+
+    def get_precio_base(self):
+        return self._precio_base
+
+    def get_tipo(self):
+        return "Servicio"
+
+    # Método común para mostrar información
+    def mostrar_info(self):
+        print(f"Código: {self._codigo}")
+        print(f"Tipo: {self.get_tipo()}")
+        print(f"Cliente: {self._cliente}")
+        print(f"Descripción: {self._descripcion}")
+        print(f"Precio base: {self._precio_base:.2f} Bs")
+
+    # Método que las clases derivadas deben redefinir (polimorfismo)
+    def calcular_costo(self):
+        return self._precio_base
+
+
+# CLASES DERIVADAS
+
+class Mantenimiento(Servicio):
+    def __init__(self, codigo, cliente, descripcion, precio_base,
+                 cantidad_equipos, costo_por_equipo):
+        # Reutiliza el constructor de la clase base
+        super().__init__(codigo, cliente, descripcion, precio_base)
+        self._cantidad_equipos = cantidad_equipos
+        self._costo_por_equipo = costo_por_equipo
+
+    def get_tipo(self):
+        return "Mantenimiento"
+
+    # Método específico
+    def costo_equipos(self):
+        return self._cantidad_equipos * self._costo_por_equipo
+
+    def mostrar_info(self):
+        super().mostrar_info()
+        print(f"Cantidad de equipos: {self._cantidad_equipos}")
+        print(f"Costo por equipo: {self._costo_por_equipo:.2f} Bs")
+
+    # Polimorfismo: precio base + equipos x costo por equipo
+    def calcular_costo(self):
+        return self._precio_base + self.costo_equipos()
+
+
