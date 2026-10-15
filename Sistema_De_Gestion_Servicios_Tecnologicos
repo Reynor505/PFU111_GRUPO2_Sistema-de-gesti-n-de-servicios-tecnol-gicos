@@ -63,4 +63,49 @@ class Mantenimiento(Servicio):
     def calcular_costo(self):
         return self._precio_base + self.costo_equipos()
 
+class Instalacion(Servicio):
+    def __init__(self, codigo, cliente, descripcion, precio_base,
+                 cantidad_dispositivos, costo_por_dispositivo):
+        super().__init__(codigo, cliente, descripcion, precio_base)
+        self._cantidad_dispositivos = cantidad_dispositivos
+        self._costo_por_dispositivo = costo_por_dispositivo
 
+    def get_tipo(self):
+        return "Instalación"
+
+    # Método específico
+    def costo_dispositivos(self):
+        return self._cantidad_dispositivos * self._costo_por_dispositivo
+
+    def mostrar_info(self):
+        super().mostrar_info()
+        print(f"Cantidad de dispositivos: {self._cantidad_dispositivos}")
+        print(f"Costo por dispositivo: {self._costo_por_dispositivo:.2f} Bs")
+
+    # Polimorfismo: precio base + dispositivos x costo por dispositivo
+    def calcular_costo(self):
+        return self._precio_base + self.costo_dispositivos()
+
+
+class SoporteTecnico(Servicio):
+    def __init__(self, codigo, cliente, descripcion, precio_base,
+                 horas_atencion, tarifa_por_hora):
+        super().__init__(codigo, cliente, descripcion, precio_base)
+        self._horas_atencion = horas_atencion
+        self._tarifa_por_hora = tarifa_por_hora
+
+    def get_tipo(self):
+        return "Soporte técnico"
+
+    # Método específico
+    def costo_horas(self):
+        return self._horas_atencion * self._tarifa_por_hora
+
+    def mostrar_info(self):
+        super().mostrar_info()
+        print(f"Horas de atención: {self._horas_atencion}")
+        print(f"Tarifa por hora: {self._tarifa_por_hora:.2f} Bs")
+
+    # Polimorfismo: precio base + horas x tarifa por hora
+    def calcular_costo(self):
+        return self._precio_base + self.costo_horas()
