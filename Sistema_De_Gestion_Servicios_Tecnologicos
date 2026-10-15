@@ -163,4 +163,64 @@ def pedir_datos_comunes(servicios):
     precio_base = pedir_decimal_positivo("Precio base (Bs): ")
     return codigo, cliente, descripcion, precio_base
 
+def registrar_mantenimiento(servicios):
+    print("\n--- Registrar servicio de mantenimiento ---")
+    codigo, cliente, descripcion, precio_base = pedir_datos_comunes(servicios)
+    cantidad = pedir_entero_positivo("Cantidad de equipos: ")
+    costo = pedir_decimal_positivo("Costo por equipo (Bs): ")
+    servicios.append(Mantenimiento(codigo, cliente, descripcion,
+                                   precio_base, cantidad, costo))
+    print("Servicio de mantenimiento registrado correctamente.")
 
+
+def registrar_instalacion(servicios):
+    print("\n--- Registrar servicio de instalación ---")
+    codigo, cliente, descripcion, precio_base = pedir_datos_comunes(servicios)
+    cantidad = pedir_entero_positivo("Cantidad de dispositivos: ")
+    costo = pedir_decimal_positivo("Costo por dispositivo (Bs): ")
+    servicios.append(Instalacion(codigo, cliente, descripcion,
+                                 precio_base, cantidad, costo))
+    print("Servicio de instalación registrado correctamente.")
+
+
+def registrar_soporte(servicios):
+    print("\n--- Registrar servicio de soporte técnico ---")
+    codigo, cliente, descripcion, precio_base = pedir_datos_comunes(servicios)
+    horas = pedir_decimal_positivo("Horas de atención: ")
+    tarifa = pedir_decimal_positivo("Tarifa por hora (Bs): ")
+    servicios.append(SoporteTecnico(codigo, cliente, descripcion,
+                                    precio_base, horas, tarifa))
+    print("Servicio de soporte técnico registrado correctamente.")
+
+
+def mostrar_servicios(servicios):
+    print("\n--- Servicios registrados ---")
+    if len(servicios) == 0:
+        print("No hay servicios registrados.")
+        return
+    for i in range(len(servicios)):
+        print(f"\nServicio #{i + 1}")
+        servicios[i].mostrar_info()   # POLIMORFISMO: cada objeto muestra lo suyo
+
+
+def mostrar_costos(servicios):
+    print("\n--- Costo de cada servicio ---")
+    if len(servicios) == 0:
+        print("No hay servicios registrados.")
+        return
+    for s in servicios:
+        # POLIMORFISMO: mismo método, resultado distinto según la clase
+        print(f"[{s.get_codigo()}] {s.get_tipo()} - {s.get_cliente()}: "
+              f"{s.calcular_costo():.2f} Bs")
+
+
+def mostrar_total(servicios):
+    print("\n--- Costo total de todos los servicios ---")
+    if len(servicios) == 0:
+        print("No hay servicios registrados.")
+        return
+    total = 0
+    for s in servicios:
+        total += s.calcular_costo()
+    print(f"Cantidad de servicios: {len(servicios)}")
+    print(f"TOTAL GENERAL: {total:.2f} Bs")
